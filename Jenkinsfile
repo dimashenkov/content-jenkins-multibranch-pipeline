@@ -47,6 +47,16 @@ pipeline {
  			sh "git tag rectangle-${env.MAJOR_VERSION}.${BUILD_NUMBER}"
  			sh "git push origin rectangle-${env.MAJOR_VERSION}.${BUILD_NUMBER}"
  		}
+ 		post {
+ 			success {
+ 				emailext(
+ 					subject: "${env.JOB_NAME} [${env.BUILD_NUMBER}] NEWRELEASE",
+ 					body: """<p>'${env.JOB_NAME} [${env.BUILD_NUMBER}]' NEWRELEASE":</p>
+ 					<p>Check console output at <a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a></p>""",
+ 					to: "dimashenkov@abv.bg"
+ 				)
+ 			}
+ 		}
  	}
  }
 }
